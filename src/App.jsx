@@ -13,20 +13,20 @@ function App() {
     },
     {
       src: 'https://gartcod.cloud/_next/static/media/mobile.548cdf6e.svg',
-      initialOpacity: 0,
-      initialTranslate: 0,
+      initialOpacity: 1,
+      initialTranslate: 2,
     },
     {
       src: 'https://gartcod.cloud/_next/static/media/desktop.6a735a94.svg',
-      initialOpacity: 0,
-      initialTranslate: 0,
+      initialOpacity: 1,
+      initialTranslate: 2,
     },
   ];
   const colors = ["-yellow-300", "-red-300", "-neutral-300"];
   
   const [textColor, setTextColor] = useState(colors[0]);
   const [currIndex, setCurrIndex] = useState(0);
-  const [imageStyle, setImageStyle] = useState(images);
+  const [imageStyle, setImageStyle] = useState(images[0]);
 
   useEffect(() => {
 
@@ -35,13 +35,7 @@ function App() {
       claimButton.style.transition = 'transform 700ms ease-in-out 0s';
       claimButton.style.transform = 'translateY(150px)';
     };
-    const handleAnimation = () => {
-      const image = document.querySelector('.cursor');
-
-      image.style.animation = 'moveImage 3s ease-in-out forwards';
-    };
     setTimeout(handleTranslation, 1500);
-    handleAnimation();
 
 
     const updateInterval = setInterval(() => {
@@ -49,14 +43,9 @@ function App() {
   
       setTextColor(colors[currIndex]);
   
-      setImageStyle((prevStyles) =>
-        prevStyles.map((style, index) => ({
-          ...style,
-          opacity: index === currIndex ? 1 : 0,
-          translate: index === currIndex ? 0.5 : 0,
-        }))
-      );
+      setImageStyle(images[currIndex]);
     }, 2000);
+
   
     return () => {
       clearInterval(updateInterval);
@@ -83,17 +72,15 @@ function App() {
             <img src={logo} alt="" width="100" height="100" className="inline-block mr-8 -mt-2 " style={{color: "transparent"}}/>
             {"for "}
             <div className="mx-2 -mt-2 align-middle inline-flex relative h-[80px] w-[80px]">
-            {imageStyle.map((style, index) => (
+            
               <img
-                key={index}
                 alt="Widget icon"
                 width="80"
                 height="80"
                 className={`w-full h-full object-contain object-center absolute top-0 left-0 transition-all duration-300`}
-                style={{ color: "transparent", opacity: `${style.opacity}`, transform: `translateY(-${style.translate}rem)` }}
-                src={style.src}
+                style={{ color: "transparent", opacity: `${imageStyle.opacity}`, transform: `translateY(-${imageStyle.translate}rem)` }}
+                src={imageStyle.src}
               />
-            ))}
 
           </div>
           <span className={`transition-colors duration-200 ${(textColor === "-yellow-300" ? "text-yellow-300" : (textColor === "-red-300") ? "text-red-300" : "text-neutral-300")}`} > & Cloud gaming</span>
@@ -121,7 +108,7 @@ function App() {
         height={50}
         alt="cursor"
         className="cursor duration-700 absolute transition-all ease-in-out z-50 your-image-class-name"
-        style={{ color: "transparent", top: "-100px", left: "-100px", transformOrigin: "top left" }}
+        style={{ color: "transparent", top: "-10%", left: "-10%", transformOrigin: "top left", animation: "moveImage 3s ease-in-out forwards" }}
       />
       </div>
     </>
